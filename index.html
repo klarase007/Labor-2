@@ -1,0 +1,402 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labor 02 – Sicherheitsprotokoll Omega</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle, #18232d, #05090d 75%);
+    color: #e8f5ff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    background: #101820;
+    border: 2px solid #263c4b;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 0 35px rgba(0, 180, 255, 0.15);
+}
+
+.header {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    color: #55cfff;
+    margin-bottom: 20px;
+}
+
+.warning {
+    text-align: center;
+    color: #ff3333;
+    font-weight: bold;
+    padding: 12px;
+    border: 1px solid #ff3333;
+    background: rgba(255, 0, 0, 0.08);
+    animation: blink 1s infinite;
+    margin-bottom: 25px;
+}
+
+@keyframes blink {
+    50% { opacity: 0.35; }
+}
+
+.door {
+    text-align: center;
+    padding: 22px;
+    margin-bottom: 25px;
+    background: #1a2731;
+    border: 2px solid #ff3333;
+    border-radius: 8px;
+    font-size: 23px;
+    font-weight: bold;
+    color: #ff5555;
+    transition: 0.5s;
+}
+
+.door.open {
+    border-color: #00ff88;
+    color: #00ff88;
+    box-shadow: 0 0 25px rgba(0,255,136,0.25);
+}
+
+.panel {
+    background: #0b1117;
+    border: 1px solid #263c4b;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.panel h2 {
+    text-align: center;
+    color: #55cfff;
+    margin-top: 0;
+}
+
+.description {
+    text-align: center;
+    color: #a9bac8;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.code {
+    padding: 18px 5px;
+    background: #172632;
+    border: 1px solid #426174;
+    border-radius: 6px;
+    color: #55cfff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.code:hover:not(:disabled) {
+    background: #24465b;
+    box-shadow: 0 0 12px rgba(0,200,255,0.3);
+}
+
+.code.selected {
+    background: #075b3b;
+    border-color: #00ff88;
+    color: #00ff88;
+}
+
+.code:disabled {
+    cursor: default;
+}
+
+.counter {
+    text-align: center;
+    margin-top: 20px;
+    color: #55cfff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.status {
+    text-align: center;
+    margin-top: 15px;
+    min-height: 24px;
+    color: #ff5555;
+}
+
+.reset {
+    display: block;
+    margin: 20px auto 0;
+    padding: 11px 25px;
+    background: #263c4b;
+    border: 1px solid #55cfff;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.reset:hover {
+    background: #34566b;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.94);
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.overlay.show {
+    display: flex;
+}
+
+.success-box {
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    padding: 35px 20px;
+    background: #101d19;
+    border: 2px solid #00ff88;
+    border-radius: 12px;
+    box-shadow: 0 0 35px rgba(0,255,136,0.3);
+}
+
+.success-box h1 {
+    color: #00ff88;
+    font-size: 28px;
+}
+
+.success-box p {
+    color: #d5e9df;
+    line-height: 1.7;
+}
+
+.success-box button {
+    margin-top: 15px;
+    padding: 12px 25px;
+    background: #075b3b;
+    border: 1px solid #00ff88;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+@media (max-width: 400px) {
+    .container {
+        padding: 15px;
+    }
+
+    .code {
+        padding: 15px 3px;
+        font-size: 17px;
+    }
+
+    .header {
+        font-size: 23px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">OMEGA LABOR</div>
+
+    <div class="warning">
+        ⚠ SICHERHEITSPROTOKOLL AKTIV ⚠
+    </div>
+
+    <div class="door" id="door">
+        🔒 LABOR 02 – VERSCHLOSSEN
+    </div>
+
+    <div class="panel">
+
+        <h2>🔒 TÜR GESPERRT</h2>
+
+        <div class="description">
+            Zugang zu LABOR 02 verweigert.<br>
+            Sicherheitscode erforderlich.<br><br>
+            Wähle die acht richtigen Hex-Codes<br>
+            in der korrekten Reihenfolge aus.
+        </div>
+
+        <div class="grid" id="grid"></div>
+
+        <div class="counter" id="counter">
+            EINGABEN: 0 / 8
+        </div>
+
+        <div class="status" id="status">
+            SYSTEMSTATUS: GESPERRT
+        </div>
+
+        <button class="reset" onclick="resetGame()">
+            ↻ SYSTEM ZURÜCKSETZEN
+        </button>
+
+    </div>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="success-box">
+        <h1>✓ ZUGRIFF ERLAUBT</h1>
+
+        <p>
+            Sicherheitscode erfolgreich bestätigt.<br>
+            <strong>LABOR 02</strong> wurde freigegeben.<br><br>
+            SICHERHEITSSCHLEUSE WIRD GEÖFFNET ...
+        </p>
+
+        <p style="color:#00ff88;">
+            ● SYSTEMSTATUS: FREIGEGEBEN
+        </p>
+
+        <button onclick="closeOverlay()">
+            WEITER
+        </button>
+    </div>
+</div>
+
+<script>
+const codes = [
+    "A7", "F2", "1C", "D4",
+    "B8", "9B", "C5", "E2",
+    "9A", "F1", "E9", "55",
+    "3A", "BD", "67", "B9"
+];
+
+const correctSequence = [
+    "1C", "E9", "55", "BD",
+    "3A", "9B", "67", "B9"
+];
+
+let currentStep = 0;
+let locked = false;
+let resetTimer = null;
+let successTimer = null;
+
+const grid = document.getElementById("grid");
+const counter = document.getElementById("counter");
+const status = document.getElementById("status");
+const door = document.getElementById("door");
+const overlay = document.getElementById("overlay");
+
+function createGrid() {
+    grid.innerHTML = "";
+
+    codes.forEach(code => {
+        const button = document.createElement("button");
+
+        button.className = "code";
+        button.textContent = code;
+
+        button.addEventListener("click", () => {
+            checkCode(code, button);
+        });
+
+        grid.appendChild(button);
+    });
+}
+
+function checkCode(code, button) {
+    if (locked || button.disabled) return;
+
+    if (code === correctSequence[currentStep]) {
+        button.classList.add("selected");
+        button.disabled = true;
+
+        currentStep++;
+
+        counter.textContent =
+            "EINGABEN: " + currentStep + " / 8";
+
+        status.textContent = "CODE BESTÄTIGT";
+        status.style.color = "#00ff88";
+
+        if (currentStep === correctSequence.length) {
+            unlockDoor();
+        }
+
+    } else {
+        locked = true;
+
+        status.textContent = "⚠ FALSCHER CODE – SYSTEMRESET";
+        status.style.color = "#ff3333";
+
+        resetTimer = setTimeout(() => {
+            resetGame();
+        }, 1200);
+    }
+}
+
+function unlockDoor() {
+    locked = true;
+
+    door.classList.add("open");
+    door.textContent = "✓ LABOR 02 – ZUGANG GEWÄHRT";
+
+    status.textContent = "SYSTEMSTATUS: FREIGEGEBEN";
+    status.style.color = "#00ff88";
+
+    successTimer = setTimeout(() => {
+        overlay.classList.add("show");
+    }, 1200);
+}
+
+function resetGame() {
+    clearTimeout(resetTimer);
+    clearTimeout(successTimer);
+
+    currentStep = 0;
+    locked = false;
+
+    door.classList.remove("open");
+    door.textContent = "🔒 LABOR 02 – VERSCHLOSSEN";
+
+    counter.textContent = "EINGABEN: 0 / 8";
+
+    status.textContent = "SYSTEMSTATUS: GESPERRT";
+    status.style.color = "#ff5555";
+
+    overlay.classList.remove("show");
+
+    createGrid();
+}
+
+function closeOverlay() {
+    overlay.classList.remove("show");
+}
+
+createGrid();
+</script>
+
+</body>
+</html>
